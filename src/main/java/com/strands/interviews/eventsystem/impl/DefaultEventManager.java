@@ -34,6 +34,21 @@ public class DefaultEventManager implements EventManager
     {
     	Collection listeners = (Collection) listenersByClass.get(eventClass);
 
+		Class parent = eventClass;
+
+		while((parent = parent.getSuperclass())!=null){
+			Collection listenersOfParent = (Collection) listenersByClass.get(parent);
+
+			if(listenersOfParent!=null){
+				if(listeners!=null){
+	    			listeners.addAll(listenersOfParent);
+	    		}
+	    		else{
+	    			listeners = listenersOfParent;
+	    		}
+			}
+		}
+
     	if(!eventClass.equals(Object.class)){
     		Collection genericListeners = (Collection) listenersByClass.get(Object.class);
     		if(genericListeners!=null && genericListeners.size()>0){
