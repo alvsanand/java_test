@@ -120,4 +120,21 @@ public class DefaultEventManagerTest
 	        assertFalse(eventListenerMock.isCalled());
     	}
     }
+
+    @Test
+    public void testGenericListenerClass()
+    {
+    	{
+	        EventListenerMock simpleEventListenerMock = new EventListenerMock(new Class[]{SimpleEvent.class});
+	        EventListenerMock genericListenerMock = new EventListenerMock(null);
+
+	        eventManager.registerListener("simpleEventListenerMock", simpleEventListenerMock);
+	        eventManager.registerListener("genericListenerMock", genericListenerMock);
+
+	        eventManager.publishEvent(new SimpleEvent(this));
+
+	        assertTrue(simpleEventListenerMock.isCalled());
+	        assertTrue(genericListenerMock.isCalled());
+    	}
+    }
 }
